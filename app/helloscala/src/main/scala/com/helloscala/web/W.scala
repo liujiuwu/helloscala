@@ -1,19 +1,52 @@
 package com.helloscala.web
 
-import net.liftweb.http.{Templates, RequestVar, SessionVar}
-import net.liftweb.common.{Box, Empty}
+import net.liftweb.http._
+import net.liftweb.common.{Full, Box, Empty}
+import net.liftweb.sitemap.Loc.TestAccess
 
-import com.helloscala.model.MUser
+import com.helloscala.model.{Account, MUser}
 
 object W {
-  object theAccount extends SessionVar[Box[MUser]](Empty)
+
+  object theAccount extends SessionVar[Box[Account]](Empty)
 
   object reqUser extends RequestVar[Box[MUser]](_findUser)
 
-  def _findUser: Box[MUser] =
+  def testSession =
+    TestAccess(() =>
+      theAccount.is match {
+        case Full(account) => Empty
+        case _ => Full(RedirectResponse(H.gotoPage openOr "/c/sign_in"))
+      })
+
+  def testAdmin =
+    TestAccess(() =>
+      theAccount.is match {
+        case Full(account) if account.user.isAdmin() => Empty
+        case _ => Full(RedirectResponse(H.gotoPage openOr "/c/sign_in"))
+      })
+
+  def signOut =
+    TestAccess(() => {
+      W.theAccount.remove()
+      Full(RedirectResponse("/index"))
+    })
+
+  def saveSessionAndCookie(user: MUser, remember: Boolean = true, data: AnyRef = null) {
+    assert(user ne null)
+
+    val account = Account(user.id, user, Option(data))
+    W.theAccount(Full(account))
+
+    S.redirectTo(S.param("goto_page") openOr "/index")
+  }
+
+  def templateSignUp =
+    Templates(List("c", "_sign_up")).openOrThrowException("/c/_sign_up not found!")
+
+  def templateSignIn =
+    Templates(List("c", "_sign_in")).openOrThrowException("/c/_sign_in not found!")
+
+  private[this] def _findUser: Box[MUser] =
     H.param("user_id").flatMap(MUser.find(_))
-
-  def templateSignUp = Templates(List("c", "_sign_up")).openOrThrowException("/c/_sign_up not found!")
-
-  def templateSignIn = Templates(List("c", "_sign_in")).openOrThrowException("/c/_sign_in not found!")
 }

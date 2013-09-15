@@ -9,4 +9,35 @@ $(function () {
     $("#main-search .input-group").animate({"width": "220"});
   });
 
+  $('#sign-up-control-pwd :password').keyup(function () {
+    var pwd = $('#sign-up-control-pwd :password').val();
+    if (pwd != '') $('#sign-up-control-pwd2').show(1000);
+  });
 })
+
+function formControlSuccess() {
+  var exp = arguments[0];
+  var msg = "";
+  if (arguments.length > 1) msg = arguments[1];
+
+  $(exp).removeClass('has-warning has-error').addClass('has-success');
+  $(exp + ' .help-block').html(msg);
+}
+
+function formControlWarning() {
+  var exp = arguments[0];
+  var msg = "";
+  if (arguments.length > 1) msg = arguments[1];
+
+  $(exp).removeClass('has-success has-error').addClass('has-warning');
+  $(exp + ' .help-block').html(msg);
+}
+
+function formControlError() {
+  var exp = arguments[0];
+  var msg = "";
+  if (arguments.length > 1) msg = arguments[1];
+
+  $(exp).removeClass('has-warning has-success').addClass('has-error');
+  $(exp + ' .help-block').html(msg);
+}

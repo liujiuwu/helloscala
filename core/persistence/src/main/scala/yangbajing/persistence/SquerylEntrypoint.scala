@@ -88,7 +88,7 @@ trait MyLocalDate {
   implicit val localDateTEF = new NonPrimitiveJdbcMapper[java.util.Date, LocalDate, TDate](dateTEF, this) {
     def convertFromJdbc(t: java.util.Date) = new LocalDate(t)
 
-    def convertToJdbc(t: LocalDate) = t.toDateMidnight.toDate
+    def convertToJdbc(t: LocalDate) = t.toDate
   }
 
   implicit val optionLocalDateTEF =

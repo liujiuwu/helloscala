@@ -7,4 +7,6 @@ object Entities extends Schema{
   val users = table[MUser]("user_")
 
   val userPasswords = table[MUserPassword]("user_password_")
+
+  override def defaultLengthOfString: Int = 1024
 }

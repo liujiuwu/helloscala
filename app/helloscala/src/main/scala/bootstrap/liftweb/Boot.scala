@@ -26,6 +26,8 @@ class Boot extends Loggable {
     // 30秒后开始淡出，再15秒后实际退出
     LiftRules.noticesAutoFadeOut.default.set((notices: NoticeType.Value) => Full(30.seconds -> 15.seconds))
 
+    LiftRules.ajaxRetryCount = Full(0)
+
     println("\n\nLiftweb run mode: " + Props.mode)
 
     Props.mode match {

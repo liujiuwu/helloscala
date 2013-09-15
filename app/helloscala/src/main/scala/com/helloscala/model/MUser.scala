@@ -11,24 +11,40 @@ import net.liftweb.util.StringHelpers
 import net.liftweb.common.Box
 
 object MUser {
-  def exists(id: String): Boolean =
-    transaction(from(Entities.users)(u =>
-      where(u.id === id)
-        compute (count(u.id))
-    )) > 0L
+  def exists(id: String): Boolean = {
+    val c: Long = transaction(
+      from(Entities.users)(u =>
+        where(u.id === id) compute (count(u.id))))
+
+    c > 0L
+  }
+
+
+  def size(nick: Option[String] = None, sex: Option[SexCode.Value] = None): Long = {
+    val _nick = nick.map(v => s"%${v}%")
+    transaction(
+      from(Entities.users)(u =>
+        where(u.nick like _nick.? and
+          (u.sex === sex.?)
+        ) compute (count(u.id))))
+  }
 
   def find(id: String, password: Option[String] = None): Box[MUser] =
     Y.tryBox {
       require(isAllowedId(id))
       password foreach (v => require(isAllowedPassword(v)))
 
-      transaction(from(Entities.users, Entities.userPasswords)((u, up) =>
-        where(
-          u.id === id and
-            (u.id === up.id) and
-            (up.password === password.?)
-        ) select (u)
-      ).single)
+      val (u, up) =
+        transaction(from(Entities.users, Entities.userPasswords)((u, up) =>
+          where(
+            u.id === id and
+              (u.id === up.id)
+          ) select (u -> up)
+        ).single)
+
+      password foreach (v => require(up.password == Y.ySha256(up.salt + v), "密码不正确"))
+
+      u
     }
 
   def persist(user: MUser): Box[Unit] =
@@ -38,7 +54,7 @@ object MUser {
       transaction(Entities.users update user)
     }
 
-  def insert(user: MUser, password: String): Box[MUser] =
+  def createAndInsert(user: MUser, password: String): Box[MUser] =
     Y.tryBox {
       require(isAllowedId(user.id))
       require(isAllowedPassword(password))
@@ -92,6 +108,9 @@ case class MUser(
   def this() {
     this("", None)
   }
+
+  def isAdmin(): Boolean = ???
+
 }
 
 case class MUserPassword(id: String, password: String, salt: String) extends KeyedEntity[String]

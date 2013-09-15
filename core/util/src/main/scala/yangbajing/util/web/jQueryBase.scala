@@ -20,10 +20,10 @@ trait jQueryBase[Self] {
 
   def cmd: JsCmd = _jsExps.foldLeft[JsExp](jq)(_ ~> _).cmd
 
-  def _enabled(): Self =
+  def removeDisabled(): Self =
     removeAttr("disabled")
 
-  def _disabled(): Self =
+  def disabled(): Self =
     attr("disabled", "disabled")
 
 
