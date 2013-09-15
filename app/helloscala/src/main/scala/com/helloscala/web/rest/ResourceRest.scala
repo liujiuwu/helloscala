@@ -1,11 +1,12 @@
 package com.helloscala.web
 package rest
 
-import com.helloscala.helper.FileHelpers
 import net.liftweb.common.{Full, Loggable}
 import net.liftweb.util.Helpers._
 import net.liftweb.http.rest.RestHelper
 import net.liftweb.http.JsonResponse
+
+import yangbajing.util.Imports.Y
 
 object ResourceRest extends RestHelper with Loggable {
 
@@ -20,7 +21,7 @@ object ResourceRest extends RestHelper with Loggable {
         ) yield {
           val file = s"/upload/${f.fileName}"
 
-          FileHelpers.saveWithContext(file) {
+          Y.saveWithContext(file) {
             out =>
               out.write(f.file)
           } match {

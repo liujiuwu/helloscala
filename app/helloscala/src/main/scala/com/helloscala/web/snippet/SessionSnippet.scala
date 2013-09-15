@@ -3,14 +3,17 @@ package snippet
 
 import scala.xml.{Unparsed, NodeSeq}
 
-import net.liftweb.util.Helpers._
 import net.liftweb.http.{S, DispatchSnippet}
+import net.liftweb.common.Full
+import net.liftweb.util.Helpers._
+import net.liftweb.util.ClearNodes
 
 object SessionSnippet extends DispatchSnippet {
 
   def dispatch = {
     case "html5Shiv" => html5Shiv
     case "respond" => respond
+    case "navbarTop" => navbarTop
     case "title" => title
     case "page404" => page404
     case "page500" => page500
@@ -38,8 +41,27 @@ object SessionSnippet extends DispatchSnippet {
     cssSel(nodeSeq)
   }
 
-  def title(nodeSeq: NodeSeq): NodeSeq = 
-    ("* *" #> "Hello, Scala!") apply nodeSeq
+  def navbarTop(nodeSeq: NodeSeq): NodeSeq = {
+    val navbarClass = S.attr("class").openOr("")
+
+    val mainMenuSel = W.theAccount.is match {
+      case Full(account) =>
+
+        "@not-logged-in" #> ClearNodes
+
+      case _ =>
+        "@logged" #> ClearNodes
+    }
+
+    val cssSel =
+      ".navbar [class+]" #> navbarClass &
+        "#main-menu" #> mainMenuSel
+
+    cssSel(nodeSeq)
+  }
+
+  def title(nodeSeq: NodeSeq): NodeSeq =
+    ("* -*" #> "Hello, Scala!") apply nodeSeq
 
   def html5Shiv(nodeSeq: NodeSeq): NodeSeq =
     Unparsed( """<!--[if lt IE 9]><script src="/asserts/js/html5shiv.js"></script><![endif]-->""")

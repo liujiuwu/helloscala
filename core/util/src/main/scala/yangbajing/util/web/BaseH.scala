@@ -57,62 +57,62 @@ trait BaseH extends BaseRandom {
     )(_ % _)
 
   @inline
-  def paramDateTime(key: String): Option[DateTime] =
-    S.param(key).toOption.filterNot(_.isEmpty).flatMap(v => Y.tryoption(Y.formatDateTime.parseDateTime(urlDecode(v))))
+  def paramDateTime(key: String): Box[DateTime] =
+    S.param(key).filterNot(_.isEmpty).flatMap(v => Y.tryBox(Y.formatDateTime.parseDateTime(urlDecode(v))))
 
   @inline
-  def paramDate(key: String): Option[LocalDate] =
-    S.param(key).toOption.filterNot(_.isEmpty).flatMap(v => Y.tryoption(Y.formatDate.parseLocalDate(urlDecode(v))))
+  def paramDate(key: String): Box[LocalDate] =
+    S.param(key).filterNot(_.isEmpty).flatMap(v => Y.tryBox(Y.formatDate.parseLocalDate(urlDecode(v))))
 
   @inline
-  def paramTime(key: String): Option[LocalTime] =
-    S.param(key).toOption.filterNot(_.isEmpty).flatMap(v => Y.tryoption(Y.formatTime.parseLocalTime(urlDecode(v))))
+  def paramTime(key: String): Box[LocalTime] =
+    S.param(key).filterNot(_.isEmpty).flatMap(v => Y.tryBox(Y.formatTime.parseLocalTime(urlDecode(v))))
 
   @inline
-  def param(key: String): Option[String] =
-    S.param(key).toOption.filterNot(_.isEmpty).map(urlDecode)
+  def param(key: String): Box[String] =
+    S.param(key).filterNot(_.isEmpty).map(urlDecode)
 
   @inline
   def param(key: String, deft: Int): Int =
     paramInt(key).getOrElse(deft)
 
   @inline
-  def paramInt(key: String): Option[Int] =
-    S.param(key).flatMap(asInt).toOption
+  def paramInt(key: String): Box[Int] =
+    S.param(key).flatMap(asInt)
 
   @inline
   def param(key: String, deft: Double): Double =
     paramDouble(key).getOrElse(deft)
 
   @inline
-  def paramDouble(key: String): Option[Double] =
-    S.param(key).flatMap(asDouble).toOption
+  def paramDouble(key: String): Box[Double] =
+    S.param(key).flatMap(asDouble)
 
   @inline
   def param(key: String, deft: Long): Long =
     paramLong(key) getOrElse deft
 
   @inline
-  def paramLong(key: String): Option[Long] =
-    S.param(key).flatMap(asLong).toOption
+  def paramLong(key: String): Box[Long] =
+    S.param(key).flatMap(asLong)
 
   @inline
   def param(key: String, deft: => Boolean): Boolean =
-    paramBoolean(key).getOrElse(deft)
+    paramBoolean(key).openOr(deft)
 
   @inline
-  def paramBoolean(key: String): Option[Boolean] =
-    S.param(key).flatMap(asBoolean).toOption
+  def paramBoolean(key: String): Box[Boolean] =
+    S.param(key).flatMap(asBoolean)
 
   @inline
   def param(key: String, deft: => ObjectId): ObjectId =
-    paramObjectId(key).getOrElse(deft)
+    paramObjectId(key).openOr(deft)
 
   @inline
-  def paramObjectId(key: String): Option[ObjectId] =
+  def paramObjectId(key: String): Box[ObjectId] =
     S.param(key) match {
-      case Full(id) if ObjectId.isValid(id) => Some(new ObjectId(id))
-      case _ => None
+      case Full(id) if ObjectId.isValid(id) => Full(new ObjectId(id))
+      case _ => Empty
     }
 
   def uriPaths(uri: String): Vector[String] = {
@@ -128,11 +128,11 @@ trait BaseH extends BaseRandom {
    * 返回的链接已 urlEncode
    * @return
    */
-  def gotoPage: Option[String] =
+  def gotoPage: Box[String] =
     S.uriAndQueryString.openOr(S.uri) match {
-      case "/" => None
-      case uri if uri.startsWith("/index") => None
-      case uri => Some(urlEncode(uri))
+      case "/" => Empty
+      case uri if uri.startsWith("/index") => Empty
+      case uri => Full(urlEncode(uri))
     }
 
   def uneditableInput[T <: AnyVal](value: T, attrs: (String, String)*): NodeSeq =

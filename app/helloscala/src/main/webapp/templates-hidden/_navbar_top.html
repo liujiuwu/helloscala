@@ -1,4 +1,4 @@
-<header class="navbar navbar-fixed-top navbar-default" role="banner">
+<header class="navbar navbar-fixed-top" role="banner" data-lift="SessionSnippet.navbarTop">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".top-nav-collapse">
@@ -6,27 +6,43 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="javascript:;">Liftweb ajax fileupload</a>
+      <a class="navbar-brand" href="/index">你好，Scala！</a>
     </div>
 
     <nav class="collapse navbar-collapse top-nav-collapse" role="navigation">
       <ul class="nav navbar-nav">
       </ul>
 
+      <form class="navbar-form navbar-left" role="search" id="main-search">
+        <div class="form-group">
+          <div class="input-group" style="width:220px;">
+            <input type="text" class="form-control" placeholder="搜索……">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-default">搜索</button>
+            </span>
+          </div>
+        </div>
+      </form>
+
       <div class="navbar-right" id="main-menu">
         <span style="color:#fff;display:none;" id="ajax-loader">载入……&nbsp;</span>
 
-        <div class="navbar-btn btn-group">
+        <div class="navbar-btn btn-group" name="logged">
           <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
             <span name="account">羊八井</span>
             <b class="caret"></b>
           </button>
           <ul class="dropdown-menu">
-            <li><a href="/c/index">用户中心</a></li>
+            <li name="c-index"><a href="/c/index">账户中心</a></li>
             <li class="divider"></li>
-            <li><a href="/c/signout">登出</a></li>
+            <li name="signout"><a href="/c/signout">登出</a></li>
           </ul>
           </li>
+        </div>
+
+        <div class="navbar-btn btn-group" name="not-logged-in">
+          <a class="btn btn-success" href="/c/sign_up">注册</a>
+          <a class="btn btn-primary" href="/c/sign_in">登录</a>
         </div>
       </div>
     </nav>

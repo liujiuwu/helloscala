@@ -1,9 +1,8 @@
 package sample.common
 
-import org.scalatest.FunSpec
-import org.scalatest.matchers.MustMatchers
+import org.scalatest.{Matchers, FunSpec}
 
-class ToolsSpec extends FunSpec with MustMatchers {
+class ToolsSpec extends FunSpec with Matchers {
 
   describe("随机字符串测试") {
     it("字符长度测试") {
@@ -13,7 +12,7 @@ class ToolsSpec extends FunSpec with MustMatchers {
     it("6位随机字符串测试") {
       val ss = (0 until 100).map(_ => Tools.randomString(6)).filter(_.length == 6).toSet
 
-      ss.size must be(100)
+      ss.size shouldBe 100
     }
   }
 

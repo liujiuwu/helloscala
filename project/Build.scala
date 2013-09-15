@@ -43,7 +43,7 @@ object Build extends Build {
   // helloscala.com
   ///////////////////////////////////////////////////////////////
   lazy val appHelloscala = webProject("app-helloscala", file("app/helloscala"), 58080)
-    .dependsOn(sampleCommon)
+    .dependsOn(helloPersistence, helloUtil, helloCommon)
     .settings(
     description := "helloscala.com",
     libraryDependencies ++= (

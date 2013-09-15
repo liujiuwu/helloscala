@@ -18,7 +18,7 @@ with TimeHelper {
   lazy val sha256 = DigestHelpers("SHA256")
   lazy val sha512 = DigestHelpers("SHA512")
 
-  val emailer = java.util.regex.Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")
+  lazy val emailer = java.util.regex.Pattern.compile(s"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*")
 
   lazy val formaterDatetimeWeak = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss E")
   lazy val formaterDatetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
