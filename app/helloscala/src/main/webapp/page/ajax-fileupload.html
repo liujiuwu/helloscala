@@ -1,0 +1,41 @@
+<div id="yangbajing" class="container" data-lift="surround?with=default;at=yangbajing">
+  <title data-lfit="head">Aajx 文件上传</title>
+
+  <div class="space-20"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="panel panel-default" data-lift="AjaxFileupload.detail">
+        <div class="panel-heading">
+          <span class="panel-title">Ajax 文件上传</span>
+        </div>
+        <div class="panel-body">
+          <div class="form-horizontal">
+            <div class="form-group" id="control-resource">
+              <label class="col-sm-3 col-md-2 col-lg-2">图片</label>
+
+              <div class="col-sm-9 col-md-10 col-md-10">
+                <img id="resource-image" class="img-responsive"/>
+                <span id="resource-description"></span>
+
+                <div class="space-5"></div>
+                <input type="file" id="resource-file" class="form-control" data-url="/api/upload/image/"/>
+
+                <div class="space-5"></div>
+                <div id="progress" class="progress progress-striped active" style="display:none;">
+                  <div id="progress-bar" class="progress-bar progress-bar-success"></div>
+                </div>
+                <span class="help-block"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script data-lift="tail" src="/assets/js/vendor/jquery.ui.widget.js"></script>
+  <script data-lift="tail" src="/assets/js/jquery.iframe-transport.js"></script>
+  <script data-lift="tail" src="/assets/js/jquery.fileupload.js"></script>
+  <script data-lift="tail" src="/assets/js/y.ajax-fileupload.js"></script>
+</div>
