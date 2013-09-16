@@ -68,6 +68,8 @@ object SessionSnippet extends DispatchSnippet {
     var nick = ""
     var first = true
 
+    S.appendJs(JE.Call("signUpPwd", "#sign-up-control-pwd", "#sign-up-control-pwd2").cmd)
+
     def idJs(v: String): JsCmd =
       if (MUser.isAllowedId(v)) {
         if (MUser.exists(v)) JE.Call("formControlError", "#sign-up-control-id", "账号已存在！").cmd

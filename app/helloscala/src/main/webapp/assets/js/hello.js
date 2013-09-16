@@ -9,11 +9,15 @@ $(function () {
     $("#main-search .input-group").animate({"width": "220"});
   });
 
-  $('#sign-up-control-pwd :password').keyup(function () {
-    var pwd = $('#sign-up-control-pwd :password').val();
-    if (pwd != '') $('#sign-up-control-pwd2').show(1000);
-  });
+
 })
+
+function signUpPwd(controlExp, controlExp2) {
+  $(controlExp + ' :password').keyup(function () {
+    var pwd = $(controlExp + ' :password').val();
+    if (pwd != '') $(controlExp2 ).show(1000);
+  });
+}
 
 function formControlSuccess() {
   var exp = arguments[0];

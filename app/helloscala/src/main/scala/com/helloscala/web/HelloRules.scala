@@ -11,7 +11,8 @@ object HelloRules {
   def sitemap() =
     SiteMap(
       Menu("assets") / "assets" / ** >> Stateless,
-      Menu("_page") / "_page" / **,
+      Menu("page") / "page" / **,
+      Menu("demo") / "demo" / **,
       Menu("static") / "static" / **,
       Menu("c") / "c" submenus(
         Menu("c-index") / "c" / "index" >> W.testSession,
@@ -19,7 +20,7 @@ object HelloRules {
         Menu("c-sign-up") / "c" / "sign_up",
         Menu("c-sign-out") / "c" / "sign_out" >> W.signOut),
       Menu("index") / "index",
-      Menu("support") / "supoort" / **
+      Menu("support") / "support" / **
     )
 
   def init() {

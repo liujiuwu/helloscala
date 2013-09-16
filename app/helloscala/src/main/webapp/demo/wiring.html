@@ -1,0 +1,28 @@
+<div data-lift="surround?with=hello;at=hello">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-9 col-lg-9" data-lift="WiringSnippet">
+        <table class="table">
+          <tbody>
+          <tr>
+            <td id="quantity"></td>
+            <td>Subtotal</td>
+            <td id="subtotal">
+              <i>The value is <b class="amount">?</b></i>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <button type="button" id="add" class="btn btn-primary">增加</button>
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+
+        <div data-lift="comet?type=ClockComet">
+          <span class="text-muted" id="clock-time"></span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@ object RdbHelpers {
 
   def registerSquerylSession() {
     SessionFactory.concreteFactory =
-      Some(() => session("jdbc:postgresql://localhost:5432/helloscala", "devuser", "devpass", new PostgreSqlAdapter))
+      Some(() => session("jdbc:postgresql://192.168.1.102:5432/helloscala", "devuser", "devpass", new PostgreSqlAdapter))
   }
 
   @inline

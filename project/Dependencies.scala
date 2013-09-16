@@ -69,7 +69,7 @@ object Dependencies {
   // 使用scala编写的markdown解析器
   val _actuarius = "eu.henkelmann" % "actuarius_2.10.0" % "0.2.6"
 
-  val sprayVersion = "1.2-20130822"
+  val sprayVersion = "1.2-20130912"
 
   val _sprayIo =  "io.spray" % "spray-io" % sprayVersion
 
