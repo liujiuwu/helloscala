@@ -34,16 +34,23 @@ object HelloRules {
     )
 
   val uriRewrites: LiftRules.RewritePF = {
-    // Blog
-    case RewriteRequest(ParsePath("u" :: UrlDecode(account) :: "blog" :: subs, suffix, true, _), _, _) =>
-      val paths = "page" :: "blog" :: subs
-      val params = Map("account" -> account)
-      RewriteResponse(paths, params)
+    case RewriteRequest(ParsePath("u" :: userId :: subs, suffix, true, _), _, _) =>
+      subs match {
+        case "micro_chat" :: id :: Nil =>
+          RewriteResponse(List("page", "micro_chat", "detail"), Map("user_id" -> userId, "micro_chat_id" -> id))
 
-    // Account center
-    case RewriteRequest(ParsePath("u" :: UrlDecode(account) :: subs, suffix, true, _), _, _) =>
-      val paths = "page" :: "account" :: subs
-      val params = Map("account" -> account)
-      RewriteResponse(paths, params)
+        case "blog" :: category :: Nil =>
+          RewriteResponse(List("page", "blog", "index"), Map("user_id" -> userId, "category" -> category))
+
+        case "blog" :: category :: id :: Nil =>
+          RewriteResponse(List("page", "blog", "detail"), Map("user_id" -> userId, "category" -> category, "id" -> id))
+
+        case Nil =>
+          RewriteResponse(List("page", "account", "index"), Map("user_id" -> userId))
+
+        case list =>
+          RewriteResponse("page" :: "account" :: list, Map("user_id" -> userId))
+      }
   }
+
 }

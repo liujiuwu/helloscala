@@ -80,7 +80,6 @@ object SessionSnippet extends DispatchSnippet {
     def funcPwd(v: String): JsCmd = {
       if (MUser.isAllowedPassword(v)) {
         pwd = v
-        println("pwd: %s, pwd2: %s" format(pwd, pwd2))
         val cmd = JE.Call("formControlSuccess", "#sign-up-control-pwd").cmd
         if (first) {
           first = false
@@ -99,7 +98,6 @@ object SessionSnippet extends DispatchSnippet {
         JE.Call("formControlError", "#sign-up-control-pwd2", "两次密码不匹配！").cmd
       else if (MUser.isAllowedPassword(v)) {
         pwd2 = v
-        println("pwd: %s, pwd2: %s" format(pwd, pwd2))
         JE.Call("formControlSuccess", "#sign-up-control-pwd").cmd &
           JE.Call("formControlSuccess", "#sign-up-control-pwd2").cmd
       } else
@@ -181,8 +179,25 @@ object SessionSnippet extends DispatchSnippet {
     cssSel(nodeSeq)
   }
 
-  def title(nodeSeq: NodeSeq): NodeSeq =
-    ("* -*" #> "Hello, Scala!") apply nodeSeq
+  def title(nodeSeq: NodeSeq): NodeSeq = {
+    val v =
+      S.uri.split('/').toList match {
+        case Nil => "您好，Scala！"
+        case list =>
+          list.tail match {
+            case "u" :: userId :: Nil => "空间"
+            case "u" :: userId :: "blog" :: _ => "博客"
+            case "u" :: userId :: "micro_chat" :: _ => "微聊"
+            case "u" :: userId :: "account" :: _ => "账户"
+            case "article" :: _ => "文章"
+            case "code" :: _ => "代码"
+            case "project" :: _ => "项目"
+            case _ => "您好，Scala！"
+          }
+      }
+
+    ("* -*" #> v) apply nodeSeq
+  }
 
   def html5Shiv(nodeSeq: NodeSeq): NodeSeq =
     Unparsed( """<!--[if lt IE 9]><script src="/asserts/js/html5shiv.js"></script><![endif]-->""")

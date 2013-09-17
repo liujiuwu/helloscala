@@ -1,12 +1,12 @@
 package com.helloscala.web
 
-import scala.xml.NodeSeq
+import scala.xml.{Elem, NodeSeq}
 
 import net.liftweb.http.Templates
 import net.liftweb.util.Helpers._
 
 import com.helloscala.helper.MicroChat
-import com.helloscala.model.MUser
+import com.helloscala.model.{MMicroChat, MUser}
 
 object MicroChatHelpers {
 
@@ -14,7 +14,7 @@ object MicroChatHelpers {
     val cssSel = for (
       user <- MUser.find(mc.chat.creator)
     ) yield {
-      val userHref = s"/u/${user.id}/"
+      val userHref = W.hrefAccount(user.id)
 
       ".portrait *" #> mc.portrait &
         "@account [href]" #> userHref &
@@ -26,6 +26,11 @@ object MicroChatHelpers {
 
     cssSel.map(_.apply(nodeChatLi)) openOr NodeSeq.Empty
   }
+
+  def portrait(mc: MMicroChat): Elem =
+    <a href={W.hrefAccount(mc.creator)}>
+      <img src={s"/upload/user/${mc.creator}/user-32.png"}/>
+    </a>
 
   def nodeChatLi = Templates(List("page", "micro_chat", "_micro_chat_li")).openOrThrowException("/page/micro_chat/_micro_chat_li not found!!!")
 }

@@ -1,11 +1,40 @@
 <div data-lift="surround?with=hello;at=hello">
+  <title data-lift="head">微聊</title>
   <div class="container">
-    <div class="row">
+    <div class="row" data-lift="MicroChatSnippet.detail">
       <div class="col-sm-9 col-md-9 col-lg-9">
-        <div data-lift="embed?what=/_index_main"></div>
+        <ul class="breadcrumb">
+          <li><a name="account">#XX的空间#</a></li>
+          <li class="active">微聊</li>
+        </ul>
+        <div>
+          <span class="portrait">
+            <a href="/u/yangbajing"><img src="/assets/img/logo-1-32.png"/></a>
+          </span>
+
+          <p name="chat-content">#内容#</p>
+
+          <span name="created-at">#发布时间#</span>
+        </div>
       </div>
       <div class="col-sm-3 col-md-3 col-lg-3">
-        <div data-lift="embed?what=/_micro_chat_1"></div>
+        <ul class="list-unstyled" id="micro-chat-replays">
+          <li>
+            <span class="portrait">
+              <a href="/u/yangbajing"><img src="/assets/img/logo-1-32.png"/></a>
+            </span>
+            <span class="body">
+              <p>
+                <a name="creator" href="">#账号#</a>
+                <span name="content">#微聊内容#</span>
+              </p>
+              <span class="text-muted">
+                <span name="time">#22分钟前#</span>
+              </span>
+            </span>
+            <span class="clearfix"></span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

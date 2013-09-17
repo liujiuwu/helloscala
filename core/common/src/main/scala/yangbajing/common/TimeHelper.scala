@@ -46,6 +46,9 @@ trait TimeHelper extends TryUsingResource {
     val minus = (0 to 59).toVector
   }
 
+  def betweenNow(time: DateTime): Int =
+    Minutes.minutesBetween(time, DateTime.now).getMinutes
+
   def weeksDateTime(first: DateTime, last: DateTime): Vector[DateTime] = {
     val _last = first.dayOfWeek().withMaximumValue
     val duration = new Duration(first, if (last.isAfter(_last)) _last else last)
