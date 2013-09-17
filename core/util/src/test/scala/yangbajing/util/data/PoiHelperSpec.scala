@@ -1,13 +1,10 @@
 package yangbajing.util.data
 
 import org.scalatest._
-import org.scalatest.matchers._
-
-import java.io.FileOutputStream
 
 import PoiTypes._
 
-class PoiHelperSpec extends FlatSpec with ShouldMatchers {
+class PoiHelperSpec extends FlatSpec with Matchers {
 
   "PoiHelper" should "create" in {
     val header = "11" -> "11" :: "22" -> "22" :: Nil

@@ -1,7 +1,16 @@
 <div>
-<div>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-
-</div>
-
+  <div data-lift="MicroChatSnippet.global">
+    <div class="input-group">
+      <input type="text" class="form-control" name="content"/>
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-warning">动弹</button>
+      </span>
+    </div>
+    <input type="hidden" name="submit"/>
+  </div>
+  <div data-lift="comet?type=MicroChatComet">
+    <ul id="micro-chat-list" class="list-unstyled">
+      <li></li>
+    </ul>
+  </div>
 </div>

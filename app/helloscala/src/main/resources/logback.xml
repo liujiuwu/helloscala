@@ -12,7 +12,7 @@
     </encoder>
   </appender>
 
-  <logger name="code" level="debug"/>
+  <logger name="com.helloscala" level="debug"/>
   <logger name="net.liftweb" level="warn"/>
   <logger name="bootstrap.liftweb" level="debug"/>
   <root level="warn">

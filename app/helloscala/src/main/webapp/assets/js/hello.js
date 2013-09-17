@@ -19,6 +19,15 @@ function signUpPwd(controlExp, controlExp2) {
   });
 }
 
+function listLiClear(exp, tagSize) {
+  var elems = $(exp);
+  var len = elems.length;
+  if (len > tagSize) {
+    for (var i = tagSize; i < len; i++)
+      elems[i].remove();
+  }
+}
+
 function formControlSuccess() {
   var exp = arguments[0];
   var msg = "";

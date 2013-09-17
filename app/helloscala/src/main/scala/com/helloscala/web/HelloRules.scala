@@ -1,12 +1,22 @@
 package com.helloscala.web
 
-import com.helloscala.web.rest.ResourceRest
-import net.liftweb.http.LiftRules
+import net.liftweb.http.{RewriteResponse, ParsePath, RewriteRequest, LiftRules}
 import net.liftweb.sitemap.{**, Menu, SiteMap}
 import net.liftweb.sitemap.Loc.Stateless
+
+import com.helloscala.web.rest.ResourceRest
 import com.helloscala.helper.RdbHelpers
 
 object HelloRules {
+
+  def init() {
+    LiftRules.addToPackages("com.helloscala.web")
+    LiftRules.statelessDispatch.append(ResourceRest)
+    LiftRules.setSiteMap(sitemap)
+    LiftRules.statelessRewrite.prepend(uriRewrites)
+
+    RdbHelpers.registerSquerylSession()
+  }
 
   def sitemap() =
     SiteMap(
@@ -23,11 +33,17 @@ object HelloRules {
       Menu("support") / "support" / **
     )
 
-  def init() {
-    LiftRules.addToPackages("com.helloscala.web")
-    LiftRules.statelessDispatch.append(ResourceRest)
-    LiftRules.setSiteMap(sitemap)
+  val uriRewrites: LiftRules.RewritePF = {
+    // Blog
+    case RewriteRequest(ParsePath("u" :: UrlDecode(account) :: "blog" :: subs, suffix, true, _), _, _) =>
+      val paths = "page" :: "blog" :: subs
+      val params = Map("account" -> account)
+      RewriteResponse(paths, params)
 
-    RdbHelpers.registerSquerylSession()
+    // Account center
+    case RewriteRequest(ParsePath("u" :: UrlDecode(account) :: subs, suffix, true, _), _, _) =>
+      val paths = "page" :: "account" :: subs
+      val params = Map("account" -> account)
+      RewriteResponse(paths, params)
   }
 }

@@ -8,5 +8,7 @@ object Entities extends Schema{
 
   val userPasswords = table[MUserPassword]("user_password_")
 
+  val microChats = table[MMicroChat]("micro_chat")
+
   override def defaultLengthOfString: Int = 1024
 }

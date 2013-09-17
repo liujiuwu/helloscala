@@ -1,11 +1,10 @@
 package yangbajing.common
 
 import org.scalatest._
-import org.scalatest.matchers._
 
 import org.joda.time._
 
-class TimeHelperSpec extends FlatSpec with ShouldMatchers with TimeHelper {
+class TimeHelperSpec extends FlatSpec with Matchers with TimeHelper {
 
   "TimeHelper" should "formater" in {
     formatMonth.parseLocalDate("2013-5") should be(new LocalDate(2013, 5, 1))

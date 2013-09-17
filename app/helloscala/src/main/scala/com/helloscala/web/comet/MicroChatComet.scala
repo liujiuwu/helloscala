@@ -1,29 +1,36 @@
-package com.helloscala.web.comet
+package com.helloscala.web
+package comet
 
 import scala.language.postfixOps
 
-import net.liftweb.http.{CometActor}
-import net.liftweb.http.js.JsCmds
-import net.liftweb.util.Helpers._
-import net.liftweb.util.Schedule
+import net.liftweb.common.Loggable
+import net.liftweb.http.{CometListener, CometActor}
+import net.liftweb.http.js.JE
 
-import yangbajing.util.Imports.Y
-import com.helloscala.common.Tick
+import com.helloscala.helper.MicroChat
+import com.helloscala.web.MicroChatHelpers
+import com.helloscala.service.MicroChatManager
 
-class MicroChatComet extends CometActor {
+class MicroChatComet extends CometActor with CometListener with Loggable {
+  // 一个Session会话生成一个实例
+  logger.debug(toString)
 
-  def render =
-    "#clock-time *" #> Y.curDateTimeString()
+  def render = {
+    val mcs = MicroChatManager.microChats
+    "#micro-chat-list" #> ("li" #> mcs.map(MicroChatHelpers.chatLi(_)))
+  }
 
   override def lowPriority = {
-    case Tick =>
+    case mc: MicroChat =>
+      val node = MicroChatHelpers.chatLi(mc)
+      val cmd =
+        $("#micro-chat-list").prepared(node).cmd &
+          JE.Call("listLiClear", "#micro-chat-list li", 5).cmd
+      partialUpdate(cmd)
+
+    case v =>
+      logger.error("v: " + v)
   }
 
-  override protected def localSetup() {
-    super.localSetup()
-  }
-
-  override protected def localShutdown() {
-    super.localShutdown()
-  }
+  protected def registerWith = MicroChatManager
 }

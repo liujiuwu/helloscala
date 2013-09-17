@@ -1,6 +1,6 @@
 /*html, body, button, input, select, textarea, li, p, table, h1, h2, h3, .masthead p, .subhead p, .marketing h2, .lead {*/
-  /*font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei UI", "Microsoft YaHei", SimHei, "\5B8B\4F53", simsun, sans-serif;*/
-  /*font-weight: normal;*/
+/*font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei UI", "Microsoft YaHei", SimHei, "\5B8B\4F53", simsun, sans-serif;*/
+/*font-weight: normal;*/
 /*}*/
 
 body {
@@ -153,5 +153,48 @@ footer .support {
 .app-danger:hover {
   box-shadow: 0px 0px 5px #d9534f;
   text-shadow: 0px 0px 5px #ccc;
+}
+
+.y-chat-li {
+  padding: 3px 0;
+  border-bottom: 1px dashed #ccc;
+}
+
+.y-chat-li .portrait,
+.y-chat-li .body {
+  float: left;
+  padding-top: 3px;
+  position: relative;
+}
+
+.y-chat-li .portrait {
+  width: 45px;
+}
+
+.y-chat-li .portrait img {
+  width: 32px;
+  height: 32px;
+}
+
+.y-chat-li .body .text-muted {
+  font-size: small;
+}
+
+@media (min-width: 768px) {
+  .y-chat-li .body {
+    width: 112px;
+  }
+}
+
+@media (min-width: 992px) {
+  .y-chat-li .body {
+    width: 167px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .y-chat-li .body {
+    width: 217px;
+  }
 }
 

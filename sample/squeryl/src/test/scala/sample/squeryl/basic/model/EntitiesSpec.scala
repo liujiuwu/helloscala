@@ -1,17 +1,16 @@
 package sample.squeryl.basic.model
 
-import org.scalatest.{BeforeAndAfterAll, FunSpec}
-import org.scalatest.matchers.MustMatchers
+import org.scalatest.{Matchers, BeforeAndAfterAll, FunSpec}
 
 import sample.squeryl.basic.helper.RdbHelpers
 import sample.common.SexGenre
 
-class EntitiesSpec extends FunSpec with MustMatchers with BeforeAndAfterAll {
+class EntitiesSpec extends FunSpec with Matchers with BeforeAndAfterAll {
 
   describe("User 测试") {
     it("建立用户") {
       val user = new User("yangbajing", 27, SexGenre.Neutral, "023-12345678")
-      User.add(user, "yangbajing").isSuccess must be(true)
+      User.add(user, "yangbajing").isSuccess should be(true)
     }
 
     it("修改用户") {
@@ -20,7 +19,7 @@ class EntitiesSpec extends FunSpec with MustMatchers with BeforeAndAfterAll {
           user.age = 28
           user.phone = "023-87654321"
           user.sex = SexGenre.Male
-          User.modify(user).isSuccess must be(true)
+          User.modify(user).isSuccess should be(true)
 
         case None =>
           assert(false)
@@ -29,7 +28,7 @@ class EntitiesSpec extends FunSpec with MustMatchers with BeforeAndAfterAll {
 
     it("查询用户") {
       val result = User.find("yangbajing", "yangbajing")
-      result.isEmpty must not be true
+      result.isEmpty should not be true
 
       val user = result.get
       assert(user.age === 28)
@@ -38,7 +37,7 @@ class EntitiesSpec extends FunSpec with MustMatchers with BeforeAndAfterAll {
     }
 
     it("删除用户") {
-      User.remove("yangbajing", "yangbajing").isFailure must not be true
+      User.remove("yangbajing", "yangbajing").isFailure should not be true
     }
   }
 
