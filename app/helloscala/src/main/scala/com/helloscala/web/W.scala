@@ -4,14 +4,19 @@ import net.liftweb.http._
 import net.liftweb.common.{Full, Box, Empty}
 import net.liftweb.sitemap.Loc.TestAccess
 
-import com.helloscala.model.{MMicroChat, Account, MUser}
+import com.helloscala.model.{MArticle, MMicroChat, Account, MUser}
+import net.liftweb.util.Helpers
 
 object W {
-  object theAccount extends SessionVar[Box[Account]](Empty)
+
+
+  object reqArticle extends RequestVar[Box[MArticle]](_findArticle)
 
   object reqUser extends RequestVar[Box[MUser]](_findUser)
 
   object reqMicroChat extends RequestVar[Box[(MMicroChat, List[MMicroChat])]](_findMicroChat)
+
+  object theAccount extends SessionVar[Box[Account]](Empty)
 
   def testSession =
     TestAccess(() =>
@@ -42,6 +47,15 @@ object W {
     S.redirectTo(S.param("goto_page") openOr "/index")
   }
 
+  def idEquals(id: String): Boolean =
+    W.theAccount.is exists (account => account.user.spaceName.exists(_ == id) || account.id == id)
+
+  def uriSpace: String = {
+    val uris = S.uri.split('/')
+    if (uris.length > 2 && uris(1) == "u") Helpers.urlDecode(uris(2))
+    else ""
+  }
+
   def hrefAccount(account: String) =
     s"/u/${account}"
 
@@ -54,8 +68,11 @@ object W {
   def templateSignIn =
     Templates(List("c", "_sign_in")).openOrThrowException("/c/_sign_in not found!")
 
+  private[this] def _findArticle: Box[MArticle] =
+    H.paramLong("article_id").flatMap(MArticle.findOneById(_))
+
   private[this] def _findUser: Box[MUser] =
-    H.param("user_id").flatMap(MUser.find(_))
+    H.param("user_id").flatMap(MUser.findOne(_))
 
   private[this] def _findMicroChat: Box[(MMicroChat, List[MMicroChat])] =
     for (

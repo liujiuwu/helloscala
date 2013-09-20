@@ -44,7 +44,7 @@ object MicroChatSnippet extends DispatchSnippet with Loggable {
         SHtml ajaxForm cssSel(nodeSeq)
 
       case _ =>
-        NodeSeq.Empty
+        <a href="/c/sign_in">登录发布微聊</a>
     }
 
   def detail(nodeSeq: NodeSeq): NodeSeq = {

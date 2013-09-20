@@ -6,12 +6,16 @@ import org.squeryl.internals.DatabaseAdapter
 import java.sql.{DriverManager, Connection}
 
 object RdbHelpers {
-
   Class.forName("org.postgresql.Driver")
 
+  // TODO 添加数据库连接池
   def registerSquerylSession() {
     SessionFactory.concreteFactory =
-      Some(() => session("jdbc:postgresql://192.168.1.102:5432/helloscala", "devuser", "devpass", new PostgreSqlAdapter))
+      Some(() => session("jdbc:postgresql://localhost:5432/helloscala", "devuser", "devpass", new PostgreSqlAdapter))
+    //    Some(() => session("jdbc:postgresql://192.168.1.102:5432/helloscala", "devuser", "devpass", new PostgreSqlAdapter))
+  }
+
+  def close() {
   }
 
   @inline

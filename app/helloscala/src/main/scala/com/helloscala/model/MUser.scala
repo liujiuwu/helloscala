@@ -5,10 +5,11 @@ import com.helloscala.common.SexCode
 import org.joda.time.DateTime
 import org.squeryl.KeyedEntity
 
-import yangbajing.persistence.SquerylEntrypoint._
-import yangbajing.util.Imports.Y
 import net.liftweb.util.StringHelpers
 import net.liftweb.common.Box
+
+import yangbajing.persistence.SquerylEntrypoint._
+import yangbajing.util.Imports.Y
 
 object MUser {
   def exists(id: String): Boolean = {
@@ -19,7 +20,6 @@ object MUser {
     c > 0L
   }
 
-
   def size(nick: Option[String] = None, sex: Option[SexCode.Value] = None): Long = {
     val _nick = nick.map(v => s"%${v}%")
     transaction(
@@ -29,7 +29,7 @@ object MUser {
         ) compute (count(u.id))))
   }
 
-  def find(id: String, password: Option[String] = None): Box[MUser] =
+  def findOne(id: String, password: Option[String] = None): Box[MUser] =
     Y.tryBox {
       require(isAllowedId(id))
       password foreach (v => require(isAllowedPassword(v)))
@@ -101,7 +101,23 @@ case class MUser(
 
                   nick: Option[String],
 
+                  // 用于个人空间标识。只能使用英文字母、数字和下划线，且必须使用字母开头，大于等于3个字符，小于等于32个字符。
+                  spaceName: Option[String] = None,
+
                   sex: Option[SexCode.Value] = None,
+
+                  qq: Option[String] = None,
+
+                  weibo: Option[String] = None,
+
+                  twitter: Option[String] = None,
+
+                  facebook: Option[String] = None,
+
+                  googlePlus: Option[String] = None,
+
+                  // 微软Live账号
+                  live: Option[String] = None,
 
                   createdAt: DateTime = DateTime.now()) extends KeyedEntity[String] {
 

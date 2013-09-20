@@ -46,18 +46,18 @@ class EntitiesTest extends FunSpec with Matchers with BeforeAndAfterAll {
     }
 
     it("select users") {
-      var user = MUser.find("yang.xunjing@qq.com")
+      var user = MUser.findOne("yang.xunjing@qq.com")
       println(user)
       user.isDefined shouldBe true
 
-      user = MUser.find("yangbajing@gmail.com", Some("yangbajing"))
+      user = MUser.findOne("yangbajing@gmail.com", Some("yangbajing"))
       println(user)
       user.isDefined shouldBe true
-      user = MUser.find("yang.xunjing@qq.com", Some("jkjkjkjkjkjkj"))
+      user = MUser.findOne("yang.xunjing@qq.com", Some("jkjkjkjkjkjkj"))
       println(user)
       user.isDefined shouldBe false
 
-      user = MUser.find("jkjk@jk.com", Some("yangjing"))
+      user = MUser.findOne("jkjk@jk.com", Some("yangjing"))
       println(user)
       user.isDefined shouldBe false
     }

@@ -1,0 +1,60 @@
+<div data-lift="surround?with=hello;at=hello">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <div data-lift="embed?what=/page/_account_panel"></div>
+      </div>
+
+      <div class="col-sm-9 col-md-9 col-lg-9">
+        <div class="panel panel-default" data-lift="ArticleSnippet.show">
+          <div class="panel-heading">
+            <div class="pull-right" style="width:45px;">
+              <img src="/assets/img/logo-1-32.png" style="width:32px;"/>
+            </div>
+            <div style="margin-right:45px;">
+              <strong class="panel-title">#标题#</strong>
+
+              <div class="text-muted">32lk4j23lk4j</div>
+            </div>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>标签：</strong><label class="label">#标签#</label>
+            </li>
+            <li class="list-group-item">
+              <p class="content">#正文#</p>
+            </li>
+          </ul>
+        </div>
+        <!-- @comments -->
+        <div class="panel panel-default" data-lift="ArticleSnippet.comments">
+          <div class="panel-heading">
+            <span class="text-muted">共收到<span name="comment-size">#数量#</span>评论</span>
+          </div>
+
+          <ul class="list-group comments">
+            <li></li>
+          </ul>
+        </div>
+        <!-- #comments -->
+        <div class="panel panel-default" data-lift="ArticleSnippet.comment">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="form" data-lift="form.ajax?class=form">
+                <div class="form-group">
+                  <textarea rows="5" class="form-control" name="comment" placeholder="在此输入评论"></textarea>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-default pull-right">发表评论</button>
+                  <input type="hidden" name="submit"/>
+
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -128,15 +128,19 @@ trait Y extends BaseY with BaseRandom with BaseImplicitly {
   def boxGen[T <: GenTraversableOnce[_]](v: T): Box[T] =
     Box !! v filterNot (_.isEmpty)
 
-  def tryBox[R](func: => R): Box[R] = try {
-    func match {
-      case r: Box[R] => r
-      case r => Box !! r
+  def tryBox[R](func: => R): Box[R] =
+    try Box !! func
+    catch {
+      case e: Exception =>
+        Failure(e.getLocalizedMessage, Full(e), Empty)
     }
-  } catch {
-    case e: Exception =>
-      Failure(e.getMessage, Full(e), Empty)
-  }
+
+  def tryFlatBox[R](func: => Box[R]): Box[R] =
+    try func
+    catch {
+      case e: Exception =>
+        Failure(e.getLocalizedMessage, Full(e), Empty)
+    }
 
   def toBox[E <: Throwable, T](either: Either[E, T]): Box[T] = either match {
     case Left(v) => Failure("", Full(v), Empty)

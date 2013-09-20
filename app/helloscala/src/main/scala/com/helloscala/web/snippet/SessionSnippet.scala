@@ -17,6 +17,7 @@ object SessionSnippet extends DispatchSnippet {
     case "html5Shiv" => html5Shiv
     case "respond" => respond
     case "navbarTop" => navbarTop
+    case "mainMenu" => mainMenu
     case "title" => title
     case "signIn" => signIn
     case "signUp" => signUp
@@ -38,7 +39,7 @@ object SessionSnippet extends DispatchSnippet {
           $("#sign-in-control-submit :submit").disabled().cmd
 
     def submitFunc: JsCmd =
-      MUser.find(id, Some(pwd)) match {
+      MUser.findOne(id, Some(pwd)) match {
         case Full(user) =>
           W.saveSessionAndCookie(user)
           JsCmds.Alert("登录成功。") &
@@ -163,6 +164,13 @@ object SessionSnippet extends DispatchSnippet {
   def navbarTop(nodeSeq: NodeSeq): NodeSeq = {
     val navbarClass = S.attr("class").openOr("")
 
+    val cssSel =
+      ".navbar [class+]" #> navbarClass
+
+    cssSel(nodeSeq)
+  }
+
+  def mainMenu(nodeSeq: NodeSeq): NodeSeq = {
     val mainMenuSel = W.theAccount.is match {
       case Full(account) =>
         "@account *" #> account.user.nick.getOrElse(account.id) &
@@ -173,8 +181,7 @@ object SessionSnippet extends DispatchSnippet {
     }
 
     val cssSel =
-      ".navbar [class+]" #> navbarClass &
-        "#main-menu" #> mainMenuSel
+      "#main-menu" #> mainMenuSel
 
     cssSel(nodeSeq)
   }
@@ -182,7 +189,7 @@ object SessionSnippet extends DispatchSnippet {
   def title(nodeSeq: NodeSeq): NodeSeq = {
     val v =
       S.uri.split('/').toList match {
-        case Nil => "您好，Scala！"
+        case Nil => "你好，Scala！"
         case list =>
           list.tail match {
             case "u" :: userId :: Nil => "空间"
@@ -192,7 +199,7 @@ object SessionSnippet extends DispatchSnippet {
             case "article" :: _ => "文章"
             case "code" :: _ => "代码"
             case "project" :: _ => "项目"
-            case _ => "您好，Scala！"
+            case _ => "你好，Scala！"
           }
       }
 

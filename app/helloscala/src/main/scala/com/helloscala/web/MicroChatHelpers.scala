@@ -12,7 +12,7 @@ object MicroChatHelpers {
 
   def chatLi(mc: MicroChat): NodeSeq = {
     val cssSel = for (
-      user <- MUser.find(mc.chat.creator)
+      user <- MUser.findOne(mc.chat.creator)
     ) yield {
       val userHref = W.hrefAccount(user.id)
 

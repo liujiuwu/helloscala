@@ -62,3 +62,7 @@ fieldset[disabled] .btn-inverse.active {
   background-color: #999;
   border-color: #888;
 }
+
+.panel-title {
+  font-size: 22px;
+}
