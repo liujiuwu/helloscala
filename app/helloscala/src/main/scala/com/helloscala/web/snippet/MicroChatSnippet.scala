@@ -10,7 +10,7 @@ import net.liftweb.http.js.JsCmds
 
 import com.helloscala.model.MMicroChat
 import com.helloscala.service.MicroChatManager
-import com.helloscala.helper.MicroChat
+import com.helloscala.helper.{HelloHelpers, MicroChat}
 import yangbajing.util.Imports.Y
 
 object MicroChatSnippet extends DispatchSnippet with Loggable {
@@ -61,7 +61,7 @@ object MicroChatSnippet extends DispatchSnippet with Loggable {
               "@creator *" #> mc.creator &
               "@creator [href]" #> accountHref &
               "@content *" #> mc.content &
-              "@time" #> s"${Y.betweenNow(mc.createdAt)}分钟前"
+              "@time" #> HelloHelpers.timeDescription(mc.createdAt)
         }
 
       ".breadcrumb" #> (
@@ -71,7 +71,7 @@ object MicroChatSnippet extends DispatchSnippet with Loggable {
         ".portrait *" #> MicroChatHelpers.portrait(mc) &
         "@chat-content *" #> mc.content &
         "@created-at *" #> Y.formatDateTime.print(mc.createdAt) &
-        "#micro-chat-replays" #> replaySels
+        "#micro-chat-replys" #> replaySels
     }
 
     cssSel match {

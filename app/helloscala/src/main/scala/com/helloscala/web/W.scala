@@ -22,14 +22,14 @@ object W {
     TestAccess(() =>
       theAccount.is match {
         case Full(account) => Empty
-        case _ => Full(RedirectResponse(H.gotoPage openOr "/c/sign_in"))
+        case _ => Full(RedirectResponse(S.param("goto_page") openOr "/c/sign_in"))
       })
 
   def testAdmin =
     TestAccess(() =>
       theAccount.is match {
         case Full(account) if account.user.isAdmin() => Empty
-        case _ => Full(RedirectResponse(H.gotoPage openOr "/c/sign_in"))
+        case _ => Full(RedirectResponse(S.param("goto_page") openOr "/c/sign_in"))
       })
 
   def signOut =

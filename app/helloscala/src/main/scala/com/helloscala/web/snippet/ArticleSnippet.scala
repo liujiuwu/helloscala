@@ -5,19 +5,21 @@ import scala.xml.NodeSeq
 
 import net.liftweb.http.{Templates, SHtml, S, DispatchSnippet}
 import net.liftweb.util.Helpers._
+import net.liftweb.util.{CssSel, ClearNodes}
+import net.liftweb.common.{Loggable, Failure, Full}
+import net.liftweb.http.js.{JsCmds, JsCmd}
 
-import com.helloscala.model.{MComment, Account, MUser, MArticle}
 import org.joda.time.DateTime
+
 import yangbajing.util.Imports.Y
 import yangbajing.util.CompareCode
-import net.liftweb.util.{CssSel, ClearNodes}
+
 import com.helloscala.helper.HelloHelpers
-import net.liftweb.common.Full
-import net.liftweb.http.js.{JsCmds, JsCmd}
+import com.helloscala.model.{MComment, Account, MUser, MArticle}
 import com.helloscala.service.HelloSystem
 import com.helloscala.common.ArticleTags
 
-object ArticleSnippet extends DispatchSnippet {
+object ArticleSnippet extends DispatchSnippet with Loggable {
   def dispatch = {
     case "panel" => panel
     case "show" => show
@@ -45,8 +47,8 @@ object ArticleSnippet extends DispatchSnippet {
       "li" #> pager.page.map {
         article =>
           val userHref = s"/u/${article.author}"
-          val imgSrc = s"/upload/user/${article.author}/avatar-32.png"
-          val articleHref = s"/article/${article.id}"
+          val imgSrc = "/assets/img/logo-1-32.png" // s"/upload/user/${article.author}/avatar-32.png"
+        val articleHref = s"/article/${article.id}"
           val meta =
             <span>
               <a href={userHref}>
@@ -96,7 +98,10 @@ object ArticleSnippet extends DispatchSnippet {
           case Full(a) =>
             HelloSystem.tagActor ! ArticleTags(a.id, req.newTags, req.tags) // 保存成功，更新tag
             JsCmds.Alert("创建文章成功") & JsCmds.RedirectTo(s"${a.id}")
-
+          case Failure(msg, e, _) =>
+            val errorMsg = e.map(_.getLocalizedMessage) openOr msg
+            e foreach (logger debug _.getLocalizedMessage)
+            JsCmds.Alert(errorMsg)
           case _ =>
             JsCmds.Alert("创建文件失败！")
         }
@@ -105,6 +110,10 @@ object ArticleSnippet extends DispatchSnippet {
           case Full(a) =>
             HelloSystem.tagActor ! ArticleTags(a.id, req.newTags, req.tags) // 保存成功，更新tag
             JsCmds.Alert("保存文章成功") & JsCmds.RedirectTo(s"${a.id}")
+          case Failure(msg, e, _) =>
+            val errorMsg = e.map(_.getLocalizedMessage) openOr msg
+            e foreach (logger debug _.getLocalizedMessage)
+            JsCmds.Alert(errorMsg)
           case _ =>
             JsCmds.Alert("保存文件失败！")
         }
@@ -122,9 +131,17 @@ object ArticleSnippet extends DispatchSnippet {
     val cssSel =
       W.reqArticle.is match {
         case Full(article) =>
+          val labelSel =
+            if (article.tags.isEmpty) ".label-item" #> ClearNodes
+            else ".label" #> article.tags.map(t => ".label *" #> t)
 
-          ".panel-title *" #> article.title &
-            ".label" #> article.tags.map(t => ".label *" #> t) &
+          ".panel-heading" #> (
+            ".panel-title *" #> article.title &
+              (W.theAccount.is match {
+                case Full(account) => "a [href]" #> s"/u/${article.author}/article/${article.id}/edit"
+                case _ => "a" #> ClearNodes
+              })) &
+            labelSel &
             ".content *" #> article.content
 
         case _ =>
@@ -176,8 +193,8 @@ object ArticleSnippet extends DispatchSnippet {
     val cssSel =
       ".badge" #> ClearNodes &
         ".comment-avatar" #> (
-          "a [href]" #> avatarUri &
-            "img [src]" #> HelloHelpers.avatarUri(c.creator)
+          "a [href]" #> avatarUri //&
+          //            "img [src]" #> HelloHelpers.avatarUri(c.creator)
           ) &
         ".comment-info" #> (
           "p *" #> c.content &

@@ -102,6 +102,10 @@ footer .support {
   font-size: small;
 }
 
+.label-item .label {
+  margin-right: 5px;
+}
+
 .y-chat-li {
   padding: 3px 0;
   border-bottom: 1px dashed #ccc;

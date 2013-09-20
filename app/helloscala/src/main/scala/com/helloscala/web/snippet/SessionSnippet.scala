@@ -27,6 +27,8 @@ object SessionSnippet extends DispatchSnippet {
   }
 
   def signIn(nodeSeq: NodeSeq): NodeSeq = {
+    W.theAccount.is foreach (_ => S.redirectTo(S.param("goto_page") openOr "/index"))
+
     var id = ""
     var pwd = ""
 
@@ -63,6 +65,8 @@ object SessionSnippet extends DispatchSnippet {
   }
 
   def signUp(nodeSeq: NodeSeq): NodeSeq = {
+    W.theAccount.is foreach (_ => S.redirectTo(S.param("goto_page") openOr "/index"))
+
     var id = ""
     var pwd = ""
     var pwd2 = ""
@@ -177,7 +181,12 @@ object SessionSnippet extends DispatchSnippet {
           "@not-logged-in" #> ClearNodes
 
       case _ =>
-        "@logged" #> ClearNodes
+        val v = H.gotoPage.map("?goto_page=" + _) openOr ""
+        "@logged" #> ClearNodes &
+          "@not-logged-in" #> (
+            ".btn-primary [href+]" #> v &
+              ".btn-success [href+]" #> v
+            )
     }
 
     val cssSel =
