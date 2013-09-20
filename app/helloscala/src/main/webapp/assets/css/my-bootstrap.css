@@ -1,18 +1,18 @@
 .hello-navbar {
   text-shadow: 0 -1px 0 rgba(0,0,0,.15);
-  background-color: #563d7c;
-  border-color: #463265;
+  background-color: #0666c5;
+  border-color: #0767c8;
   box-shadow: 0 1px 0 rgba(255,255,255,.1);
 }
 .hello-navbar .navbar-collapse {
-  border-color: #463265;
+  border-color: #0767c8;
 }
 .hello-navbar .navbar-brand {
   color: #fff;
   max-width: 400px;
 }
 .hello-navbar .navbar-nav > li > a {
-  color: #cdbfe3;
+  color: #eee;
 }
 .hello-navbar .navbar-nav > li > a:hover {
   color: #fff;
@@ -20,14 +20,14 @@
 .hello-navbar .navbar-nav > .active > a,
 .hello-navbar .navbar-nav > .active > a:hover {
   color: #fff;
-  background-color: #463265;
+  background-color: #0767c8;
 }
 .hello-navbar .navbar-toggle {
-  border-color: #563d7c;
+  border-color: #0666c5;
 }
 .hello-navbar .navbar-toggle:hover {
-  background-color: #463265;
-  border-color: #463265;
+  background-color: #0767c8;
+  border-color: #0767c8;
 }
 
 .btn-inverse {
